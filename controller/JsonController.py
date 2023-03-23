@@ -16,4 +16,5 @@ def read_json(tag: str):
                 file_info.write(f'Members: {jr.get_card_members(card, members)}\n')
                 file_info.write(f'Tags: {jr.get_card_labels(card)}\n')
                 file_info.write(f'Activities: {jr.get_card_checklists(card, checklists)}\n')
-                file_info.write(f'List: {jr.get_card_list(card, lists)}\n\n')
+                file_info.write(f'List: {jr.get_card_list(card, lists)}\n')
+                file_info.write(f'Evidences: {jr.get_card_evidences(card)}\n\n')

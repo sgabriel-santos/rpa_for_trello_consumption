@@ -1,9 +1,10 @@
 from utils import selenium as sl
 import config.credentials as credentials
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
-def do_login(driver: WebElement):
+def do_login(driver: WebDriver):
     driver.find_element(By.XPATH, '//*[@id="BXP-APP"]/header[1]/div/div[1]/div[2]/a[1]').click()
     ipt_email = sl.wait_render(driver, '//*[@id="user"]', By.XPATH)
     ipt_email.send_keys(credentials.LOGIN)
@@ -16,13 +17,13 @@ def do_login(driver: WebElement):
 
     btn_continue.click()
 
-def open_board(driver: WebElement, board: str):
+def open_board(driver: WebDriver, board: str):
     board: WebElement = sl.wait_render(driver, f'[title={board}]', By.CSS_SELECTOR)
     board.click()
 
-def do_export(driver: WebElement):
+def do_export(driver: WebDriver):
     btn_more = sl.wait_render(driver, 'js-open-more', By.CLASS_NAME)
-    
+
     try:
         btn_option = sl.wait_render(driver, '.show-sidebar-button-react-root button', By.CSS_SELECTOR)
         btn_option.click()
