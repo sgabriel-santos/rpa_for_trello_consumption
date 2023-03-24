@@ -5,7 +5,6 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
 def do_login(driver: WebDriver):
-    driver.find_element(By.XPATH, '//*[@id="BXP-APP"]/header[1]/div/div[1]/div[2]/a[1]').click()
     ipt_email = sl.wait_render(driver, '//*[@id="user"]', By.XPATH)
     ipt_email.send_keys(credentials.LOGIN)
 
@@ -17,27 +16,17 @@ def do_login(driver: WebDriver):
 
     btn_continue.click()
 
-def open_board(driver: WebDriver, board: str):
-    board: WebElement = sl.wait_render(driver, f'[title={board}]', By.CSS_SELECTOR)
-    board.click()
-
-def do_export(driver: WebDriver):
-    btn_more = sl.wait_render(driver, 'js-open-more', By.CLASS_NAME)
-
+def do_export(driver: WebDriver, board_name: str):
+    sl.wait_render(driver, 'boards-page-board-section-list', By.CLASS_NAME)
     try:
-        btn_option = sl.wait_render(driver, '.show-sidebar-button-react-root button', By.CSS_SELECTOR)
-        btn_option.click()
+        board = driver.find_element(By.CSS_SELECTOR, f'a.board-tile:has([title="{board_name}"])')
     except:
-        pass
+        print(f'Board {board_name} not found')
+        return False
     
-    btn_more.click()
-
-    btn_share = sl.wait_render(driver, 'js-share', By.CLASS_NAME)
-    btn_share.click()
-
-    btn_export_json = sl.wait_render(driver, 'js-export-json', By.CLASS_NAME)
-    btn_export_json.click()
-
+    href = board.get_attribute('href')
+    url_json = href[:href.rfind('/')] + '.json'
+    driver.get(url_json)
     json_data = sl.wait_render(driver, 'body > pre', By.CSS_SELECTOR)
 
     with open('trello.json', 'w', encoding='utf-8') as file:

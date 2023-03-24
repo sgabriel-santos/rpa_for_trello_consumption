@@ -28,11 +28,10 @@ if config['check_trello'] == 'Y':
     """
     driver = webdriver.Chrome(options=options)
     driver.maximize_window()
-    link = 'https://trello.com/'
+    link = 'https://trello.com/login'
     driver.get(link)
 
     sc.do_login(driver)
-    sc.open_board(driver, project)
-    sc.do_export(driver)
+    sc.do_export(driver, project)
     
 jc.read_json(tag)
