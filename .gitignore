@@ -2,3 +2,6 @@ __pycache__/
 venv/
 credentials.*
 info.txt
+trello.json
+demo.docx
+evidences/*

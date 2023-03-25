@@ -5,13 +5,12 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
 def do_login(driver: WebDriver):
-    ipt_email = sl.wait_render(driver, '//*[@id="user"]', By.XPATH)
+    ipt_email = sl.wait_render(driver, 'user', By.ID)
     ipt_email.send_keys(credentials.LOGIN)
 
-    btn_continue = driver.find_element(By.XPATH, '//*[@id="login"]').click()
+    btn_continue = driver.find_element(By.ID, 'login').click()
     btn_continue = sl.wait_render(driver, 'login-submit', By.ID)
-    
-    ipt_password = sl.wait_render(driver, '//*[@id="password"]', By.XPATH)
+    ipt_password = sl.wait_render(driver, 'password', By.ID)
     ipt_password.send_keys(credentials.PASSWORD)
 
     btn_continue.click()

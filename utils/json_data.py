@@ -1,3 +1,5 @@
+from time import sleep
+
 def get_members(json_data):
     members = {}
     for member in json_data['members']:
@@ -41,7 +43,7 @@ def get_card_labels(card):
         labels.append(label['name'])
     return labels
 
-def get_card_evidences(card):
+def get_card_evidences(card, driver):
     attachments = []
     for attachment in card['attachments']:
         if not attachment: continue
@@ -52,17 +54,18 @@ def get_card_evidences(card):
             'url': attachment['url']
         })
         
-        # #To download evidences
-        # if not driver: continue
-        # driver.execute_script(f"""
-        #     a = document.createElement('a');
-        #     a.href = '{attachment['url']}';
-        #     a.download = '{attachment['name']}';
-        #     document.body.appendChild(a);
-        #     a.click()
-        #     document.body.removeChild(a);
-        #     """
-        # )
+        #To download evidences
+        if not driver: continue
+        driver.execute_script(f"""
+            a = document.createElement('a');
+            a.href = '{attachment['url']}';
+            a.download = '{attachment['name']}';
+            document.body.appendChild(a);
+            a.click()
+            document.body.removeChild(a);
+            """
+        )
+        sleep(3)
     return attachments
 
 def is_card_with_tag(card, tag):

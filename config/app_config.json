@@ -2,5 +2,6 @@
     "check_trello": "Y",
     "use_config_project_and_tag": "Y",
     "project": "project_name",
-    "tag": "tag_name_to_search_in_the_card"
+    "tag": "tag_name_to_search_in_the_card",
+    "folder_evidences": "evidences"
 }
