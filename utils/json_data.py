@@ -44,6 +44,7 @@ def get_card_labels(card):
     return labels
 
 def get_card_evidences(card, driver):
+    amount_downloads = 0
     attachments = []
     for attachment in card['attachments']:
         if not attachment: continue
@@ -56,6 +57,7 @@ def get_card_evidences(card, driver):
         
         #To download evidences
         if not driver: continue
+        amount_downloads+=1
         driver.execute_script(f"""
             a = document.createElement('a');
             a.href = '{attachment['url']}';
@@ -65,7 +67,7 @@ def get_card_evidences(card, driver):
             document.body.removeChild(a);
             """
         )
-        sleep(3)
+    if amount_downloads: sleep(amount_downloads*1)
     return attachments
 
 def is_card_with_tag(card, tag):

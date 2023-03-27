@@ -1,29 +1,35 @@
+import os
 import json
 from io import TextIOWrapper
 from utils import json_data as jr
 from controller import DocumentController as dc
 from docx import Document
 from docx.document import Document as Doc
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Inches
-from docx.shared import Pt
 
 def read_json(tag: str, folder_evidences: str, driver):
-    with open('trello.json', 'r', encoding="utf-8") as json_file:
+    file_name = 'trello.json'
+    file_path = os.getcwd() + '\\' + file_name
+    
+    if not os.path.isfile(file_path): 
+        print(f'Não foi possível locallizar arquivo: {file_name}')
+        return
+    
+    with open(file_name, 'r', encoding="utf-8") as json_file:
         board_info = json.load(json_file)
         board_info = build_board_info(board_info)
-        
-        with open('info.txt', 'w', encoding='utf-8') as txt_file:
-            document: Doc = Document()
-            for card in board_info['cards']:
-                if not jr.is_card_with_tag(card, tag): continue
-                card_info = build_card_info(card, board_info, driver)
+        cards_info = []
 
-                if card_info['name'] == "CARD TEMPLATE": continue
-
-                add_card_info_txt(txt_file, card_info)
-                add_card_info_doc(document, folder_evidences, card_info)
-            document.save('demo.docx')
+        for card in board_info['cards']:
+            if not jr.is_card_with_tag(card, tag): continue
+            cards_info.append(build_card_info(card, board_info, driver))
+    
+    with open('info.txt', 'w', encoding='utf-8') as txt_file:        
+        document: Doc = Document()
+        for card_info in cards_info:
+            if card_info['name'] == "CARD TEMPLATE": continue
+            add_card_info_txt(txt_file, card_info)
+            add_card_info_doc(document, folder_evidences, card_info)
+        document.save('demo.docx')
 
 def build_board_info(board_data):
     return {
