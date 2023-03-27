@@ -6,7 +6,7 @@ from controller import DocumentController as dc
 from docx import Document
 from docx.document import Document as Doc
 
-def read_json(tag: str, folder_evidences: str, driver):
+def read_json(project: str, tag: str, folder_evidences: str, driver):
     file_name = 'trello.json'
     file_path = os.getcwd() + '\\' + file_name
     
@@ -29,7 +29,7 @@ def read_json(tag: str, folder_evidences: str, driver):
             if card_info['name'] == "CARD TEMPLATE": continue
             add_card_info_txt(txt_file, card_info)
             add_card_info_doc(document, folder_evidences, card_info)
-        document.save('demo.docx')
+        document.save(f'{project}_{tag}.docx')
 
 def build_board_info(board_data):
     return {
@@ -42,6 +42,7 @@ def build_board_info(board_data):
 def build_card_info(card, board_info, driver):
     return {
         'name': card['name'],
+        'description': card['desc'],
         'members': jr.get_card_members(card, board_info['members']),
         'tags': jr.get_card_labels(card),
         'activities': jr.get_card_checklists(card, board_info['checklists']),
@@ -52,6 +53,7 @@ def build_card_info(card, board_info, driver):
 def add_card_info_txt(txt_file: TextIOWrapper, card_info):
     txt_file.write('------\n')
     txt_file.write(f'Name: {card_info["name"]}\n')
+    txt_file.write(f'Description: {card_info["description"]}')
     txt_file.write(f'Members: {card_info["members"]}\n')
     txt_file.write(f'Tags: {card_info["tags"]}\n')
     txt_file.write(f'Activities: {card_info["activities"]}\n')
@@ -59,10 +61,11 @@ def add_card_info_txt(txt_file: TextIOWrapper, card_info):
     txt_file.write(f'Evidences: {card_info["evidences"]}\n\n')
 
 def add_card_info_doc(document: Doc, folder_evidences, card_info):
-    dc.write_name_card(document, card_info["name"])
+    dc.write_card_name(document, card_info["name"])
     dc.write_info(document, 'Membros', card_info['members'])
     dc.write_info(document, "Tags", card_info["tags"])
     dc.write_activities(document, card_info["activities"])
-    dc.write_info(document, 'List: ', card_info["list"])
+    dc.write_info(document, 'List', card_info["list"])
+    dc.write_description(document, card_info['description'])
     dc.write_evidences(document, folder_evidences, card_info["evidences"])
     dc.write_blank_line(document)

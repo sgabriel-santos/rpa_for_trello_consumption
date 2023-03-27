@@ -5,11 +5,32 @@ from docx.shared import RGBColor
 from docx.shared import Inches
 from docx.shared import Pt
 
-def write_name_card(document: Doc, name_card):
+def write_card_name(document: Doc, card_name):
     p = document.add_paragraph()
-    text = p.add_run(name_card)
+    text = p.add_run(card_name)
     text.bold = True
     text.font.size = Pt(12)
+
+def write_description(document: Doc, card_description: str):
+    card_description = card_description.split('---')[-1].replace('`', '')
+    document.add_paragraph().add_run('Descrição:').bold = True
+
+    next_bold = card_description.find('**')
+    while next_bold != -1:
+        substr = card_description[:next_bold]
+        for text in substr.split('\n'):
+            clean_text = text.replace('\n', '').strip()
+            if len(clean_text) < 3: continue
+
+            p = document.add_paragraph()
+            if text.startswith('   -'):
+                p.add_run(text[5:])
+                p.style = 'List Bullet'
+            else:
+                p.add_run(text).bold = True
+        
+        card_description = card_description[next_bold+2:]
+        next_bold = card_description.find('**')
 
 def write_info(document: Doc, title: str, info: str):
     p = document.add_paragraph()
@@ -30,9 +51,6 @@ def write_activities(document: Doc, activities: list):
         write_not_added(p, 'Nenhuma atividade adicionado')
 
 def write_evidences(document: Doc, folder_evidences: str, evidences: list):
-    p = document.add_paragraph()
-    p.add_run('Evidências:').bold = True
-
     images_not_found = []
     if evidences:
         for evidence in evidences:
@@ -46,8 +64,11 @@ def write_evidences(document: Doc, folder_evidences: str, evidences: list):
                 p.add_run().add_picture(f"{folder_evidences}/{file_name}", width=Inches(6))
                 document.add_paragraph('Figura: linha product line').alignment = WD_ALIGN_PARAGRAPH.CENTER
             except:
+                text = p.add_run(f'Não foi possível baixar evidência: {file_name}')
+                text.font.color.rgb = RGBColor(255, 0, 0)
                 images_not_found.append(file_name)
     else:
+        p = document.add_paragraph()
         write_not_added(p, 'Nenhuma evidência adicionada')
 
     if images_not_found:

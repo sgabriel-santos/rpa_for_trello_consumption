@@ -37,4 +37,4 @@ if config['check_trello'] == 'Y':
     sc.do_login(driver)
     sc.do_export(driver, project)
     
-jc.read_json(tag, config['folder_evidences'], driver)
+jc.read_json(project, tag, config['folder_evidences'], driver)
