@@ -59,8 +59,10 @@ def get_card_evidences(card, driver, full_path_evidences):
         #To download evidences
         if not driver: continue
         
-        evidence_name = f"{attachment['name'].split('.')[0]}.{attachment['url'].split('.')[-1]}"
+        extension = attachment['url'].split('.')[-1]
+        evidence_name = f"{attachment['name'].split('.')[0]}.{extension}"
         full_path_evidence = f"{full_path_evidences}\\{evidence_name}"
+        if extension.lower() != 'png' and extension.lower() != 'jpeg': continue
         if os.path.isfile(full_path_evidence): continue
         
         amount_downloads+=1
