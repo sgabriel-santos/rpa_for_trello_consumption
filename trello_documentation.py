@@ -26,7 +26,8 @@ if config['check_trello'] == 'Y':
         "download_restrictions": 0,
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
-        "safebrowsing.enabled": True
+        "safebrowsing.enabled": True,
+        "profile.default_content_setting_values.automatic_downloads": 1
     })
     
     driver = webdriver.Chrome(options=options)
