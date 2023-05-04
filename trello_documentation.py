@@ -20,9 +20,9 @@ if config['check_trello'] == 'Y':
 
     # File download setup
     options = Options()
-    directory_evidences = os.getcwd() + '\\' + config['folder_evidences']
+    full_path_evidences = f"{os.getcwd()}\\{config['folder_evidences']}\\{project}_{tag}"
     options.add_experimental_option("prefs", {
-        "download.default_directory": directory_evidences,
+        "download.default_directory": full_path_evidences,
         "download_restrictions": 0,
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
@@ -35,6 +35,7 @@ if config['check_trello'] == 'Y':
     driver.get(link)
 
     sc.do_login(driver)
-    sc.do_export(driver, project)
-    
-jc.read_json(project, tag, config['folder_evidences'], driver)
+    sc.do_export(driver, project, tag)
+
+relative_path_evidences = f"{config['folder_evidences']}/{project}_{tag}"
+jc.read_json(project, tag, relative_path_evidences, driver, full_path_evidences)

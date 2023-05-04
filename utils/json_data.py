@@ -1,4 +1,5 @@
 from time import sleep
+import os
 
 def get_members(json_data):
     members = {}
@@ -43,7 +44,7 @@ def get_card_labels(card):
         labels.append(label['name'])
     return labels
 
-def get_card_evidences(card, driver):
+def get_card_evidences(card, driver, full_path_evidences):
     amount_downloads = 0
     attachments = []
     for attachment in card['attachments']:
@@ -57,6 +58,11 @@ def get_card_evidences(card, driver):
         
         #To download evidences
         if not driver: continue
+        
+        evidence_name = f"{attachment['name'].split('.')[0]}.{attachment['url'].split('.')[-1]}"
+        full_path_evidence = f"{full_path_evidences}\\{evidence_name}"
+        if os.path.isfile(full_path_evidence): continue
+        
         amount_downloads+=1
         driver.execute_script(f"""
             a = document.createElement('a');

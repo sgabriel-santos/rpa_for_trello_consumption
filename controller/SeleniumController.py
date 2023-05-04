@@ -15,7 +15,7 @@ def do_login(driver: WebDriver):
 
     btn_continue.click()
 
-def do_export(driver: WebDriver, board_name: str):
+def do_export(driver: WebDriver, board_name: str, tag: str):
     sl.wait_render(driver, 'boards-page-board-section-list', By.CLASS_NAME)
     try:
         board = driver.find_element(By.CSS_SELECTOR, f'a.board-tile:has([title="{board_name}"])')
@@ -28,5 +28,5 @@ def do_export(driver: WebDriver, board_name: str):
     driver.get(url_json)
     json_data = sl.wait_render(driver, 'body > pre', By.CSS_SELECTOR)
 
-    with open('trello.json', 'w', encoding='utf-8') as file:
+    with open(f'exports/{board_name}_{tag}.json', 'w', encoding='utf-8') as file:
         file.write(json_data.text)
