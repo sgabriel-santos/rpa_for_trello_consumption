@@ -78,5 +78,17 @@ def get_card_evidences(card, driver, full_path_evidences):
     if amount_downloads: sleep(amount_downloads*1)
     return attachments
 
+def is_valid_card(card, tag, lists_to_get, board_info):
+    return is_card_with_tag(card, tag) \
+        and card_contains_any_list(card, lists_to_get, board_info) \
+        and card['name'] != "CARD TEMPLATE"
+
+def card_contains_any_list(card, lists_to_get, board_info):
+    card_list = get_card_list(card, board_info['lists'])
+    for list in lists_to_get:
+        if card_list.find(list) != -1: return True
+    return False
+
+
 def is_card_with_tag(card, tag):
     return tag in get_card_labels(card)

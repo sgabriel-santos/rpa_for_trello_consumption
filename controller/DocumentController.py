@@ -37,6 +37,11 @@ def write_info(document: Doc, title: str, info: str):
     p.add_run(f'{title}: ').bold = True
     p.add_run(info)
 
+def write_info_list(document: Doc, title: str, info: list):
+    p = document.add_paragraph()
+    p.add_run(f'{title}: ').bold = True
+    p.add_run(str(info).replace('[', '').replace(']', '').replace("'", ''))
+
 def write_activities(document: Doc, activities: list):
     p = document.add_paragraph()
     p.add_run('Atividades:').bold = True

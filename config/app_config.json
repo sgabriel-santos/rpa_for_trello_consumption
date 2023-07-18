@@ -2,5 +2,6 @@
     "check_trello": "Y",
     "use_config_project_and_tag": "Y",
     "project": "IHR-SE",
-    "tag": "Sprint 25"
+    "tag": ["Sprint 24", "Sprint 25", "Sprint 26"],
+    "lists_to_get": ["Done", "Production"]
 }
