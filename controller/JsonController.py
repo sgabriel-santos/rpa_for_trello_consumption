@@ -1,6 +1,5 @@
 import os
 import json
-from io import TextIOWrapper
 from utils import json_data as jr
 from controller import DocumentController as dc
 from docx import Document
@@ -43,6 +42,7 @@ def build_card_info(card, board_info, driver, full_path_evidences):
     return {
         'name': card['name'],
         'description': card['desc'],
+        'short_url': card['shortUrl'],
         'members': jr.get_card_members(card, board_info['members']),
         'tags': jr.get_card_labels(card),
         'activities': jr.get_card_checklists(card, board_info['checklists']),
@@ -52,6 +52,7 @@ def build_card_info(card, board_info, driver, full_path_evidences):
 
 def add_card_info_doc(document: Doc, relative_path_evidences, card_info):
     dc.write_card_name(document, card_info["name"])
+    dc.write_info(document, 'URL', card_info['short_url'])
     dc.write_info_list(document, 'Membros', card_info['members'])
     dc.write_info_list(document, "Tags", card_info["tags"])
     dc.write_activities(document, card_info["activities"])
