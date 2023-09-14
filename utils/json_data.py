@@ -66,15 +66,18 @@ def get_card_evidences(card, driver, full_path_evidences):
         if os.path.isfile(full_path_evidence): continue
         
         amount_downloads+=1
-        driver.execute_script(f"""
-            a = document.createElement('a');
-            a.href = '{attachment['url']}';
-            a.download = '{attachment['name']}';
-            document.body.appendChild(a);
-            a.click()
-            document.body.removeChild(a);
-            """
-        )
+        try:
+            driver.execute_script(f"""
+                a = document.createElement('a');
+                a.href = '{attachment['url']}';
+                a.download = '{attachment['name']}';
+                document.body.appendChild(a);
+                a.click()
+                document.body.removeChild(a);
+                """
+            )
+        except:
+            print('Error downloading evidence:', evidence_name)
     if amount_downloads: sleep(amount_downloads*1)
     return attachments
 

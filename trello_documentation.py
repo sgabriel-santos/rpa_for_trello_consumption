@@ -1,7 +1,8 @@
 from selenium import webdriver
 from controller import SeleniumController as sc
 from controller import JsonController as jc
-from controller import DocumentController as dc
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import json
 import os
@@ -39,7 +40,8 @@ if config['check_trello'] == 'Y':
         "safebrowsing.enabled": True,
         "profile.default_content_setting_values.automatic_downloads": 1
     })
-    driver = webdriver.Chrome(options=options)
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.maximize_window()
     link = 'https://trello.com/login'
     driver.get(link)
@@ -57,3 +59,5 @@ print('----------')
 for tag in tags:
     print(f'Buscando Tag: {tag}')
     jc.read_json(project, tag, lists_to_get, relative_path_evidences, driver, full_path_evidences)
+
+if driver: driver.quit()

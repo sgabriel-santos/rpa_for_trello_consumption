@@ -52,7 +52,7 @@ def build_card_info(card, board_info, driver, full_path_evidences):
 
 def add_card_info_doc(document: Doc, relative_path_evidences, card_info):
     dc.write_card_name(document, card_info["name"])
-    dc.write_info(document, 'Membros', card_info['members'])
+    dc.write_info_list(document, 'Membros', card_info['members'])
     dc.write_info_list(document, "Tags", card_info["tags"])
     dc.write_activities(document, card_info["activities"])
     dc.write_info(document, 'List', card_info["list"])
