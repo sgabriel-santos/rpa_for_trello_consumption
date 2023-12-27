@@ -41,7 +41,9 @@ if config['check_trello'] == 'Y':
         "profile.default_content_setting_values.automatic_downloads": 1
     })
 
+    print('Instalando webdriver compatível com o chrome instalado')
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    print('WebDriver instalado corretamente!!')
     driver.maximize_window()
     link = 'https://trello.com/login'
     driver.get(link)
